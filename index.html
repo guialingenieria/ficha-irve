@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ficha Técnica IRVE — GuiAl Ingeniería</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap');
+
+  :root {
+    --burdeos: #780000;
+    --burdeos-light: #9a0000;
+    --gris-titulo: #464646;
+    --gris-texto: #505050;
+    --gris-claro: #E0E0E0;
+    --gris-fondo: #f5f4f2;
+    --verde: #2d6a2d;
+    --amarillo: #b8860b;
+    --bg: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--gris-fondo);
+    color: var(--gris-texto);
+    min-height: 100vh;
+  }
+
+  /* CABECERA */
+  header {
+    background: var(--burdeos);
+    color: white;
+    padding: 18px 24px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(120,0,0,0.3);
+  }
+  header .brand {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  header .sub {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-top: 2px;
+    font-weight: 400;
+  }
+
+  /* BARRA DE PROGRESO */
+  .progress-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    background: white;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* CONTENEDOR */
+  .container {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 24px 16px 80px;
+  }
+
+  /* SECCIONES */
+  .seccion {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .seccion-header {
+    background: var(--gris-titulo);
+    color: white;
+    padding: 12px 18px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .seccion-header .num {
+    background: var(--burdeos);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .seccion-body {
+    padding: 18px;
+  }
+
+  /* CAMPOS */
+  .campo {
+    margin-bottom: 16px;
+  }
+  .campo:last-child { margin-bottom: 0; }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gris-titulo);
+    margin-bottom: 6px;
+  }
+  label .req { color: var(--burdeos); }
+
+  input[type="text"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--gris-claro);
+    border-radius: 8px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    color: var(--gris-titulo);
+    background: white;
+    transition: border-color 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--burdeos);
+  }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23464646' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+  textarea { resize: vertical; min-height: 70px; }
+
+  .fila-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* TARJETA DE RECOMENDACIÓN */
+  .recomendacion {
+    display: none;
+    margin-top: 10px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    border-left: 3px solid;
+  }
+  .recomendacion.ok {
+    background: #f0f7f0;
+    border-color: var(--verde);
+    color: #1a4a1a;
+  }
+  .recomendacion.aviso {
+    background: #fff8e6;
+    border-color: var(--amarillo);
+    color: #4a3600;
+  }
+  .recomendacion.info {
+    background: #f0f4ff;
+    border-color: #4a6fa5;
+    color: #1a2f5a;
+  }
+  .recomendacion .rec-titulo {
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .recomendacion.visible { display: block; }
+
+  /* BADGE RECOMENDADO */
+  .badge {
+    display: inline-block;
+    background: var(--verde);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-left: 6px;
+    vertical-align: middle;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  /* RESUMEN */
+  #resumen-section {
+    display: none;
+  }
+  .resumen-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .resumen-tabla tr:nth-child(even) td { background: var(--gris-fondo); }
+  .resumen-tabla td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--gris-claro);
+    vertical-align: top;
+  }
+  .resumen-tabla td:first-child {
+    font-weight: 600;
+    color: var(--gris-titulo);
+    width: 45%;
+    font-size: 12px;
+  }
+  .resumen-tabla .grupo td {
+    background: var(--burdeos) !important;
+    color: white;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 7px 12px;
+  }
+
+  /* ALERTA RESUMEN */
+  .alerta-resumen {
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .alerta-resumen.error {
+    background: #fff0f0;
+    color: #8b0000;
+    border: 1.5px solid #ffcccc;
+  }
+
+  /* BOTONES */
+  .btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    margin-top: 12px;
+  }
+  .btn-primary {
+    background: var(--burdeos);
+    color: white;
+  }
+  .btn-primary:active { background: var(--burdeos-light); transform: scale(0.98); }
+  .btn-whatsapp {
+    background: #25D366;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .btn-whatsapp:active { background: #1da855; transform: scale(0.98); }
+  .btn-secondary {
+    background: var(--gris-claro);
+    color: var(--gris-titulo);
+  }
+
+  /* FOOTER */
+  .footer-note {
+    text-align: center;
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 20px;
+  }
+
+  /* SEPARADOR */
+  .sep {
+    border: none;
+    border-top: 1px solid var(--gris-claro);
+    margin: 14px 0;
+  }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">GuiAl Ingeniería</div>
+  <div class="sub">Ficha técnica para instalaciones IRVE · Rellena y envía por WhatsApp</div>
+  <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+</header>
+
+<div class="container">
+
+  <!-- SECCIÓN 1: INSTALADOR -->
+  <div class="seccion">
+    <div class="seccion-header">
+      <span class="num">1</span> Datos del instalador
+    </div>
+    <div class="seccion-body">
+      <div class="campo">
+        <label>Nombre del instalador <span class="req">*</span></label>
+        <input type="text" id="inst_nombre" placeholder="Nombre y apellidos">
+      </div>
+      <div class="fila-2">
+        <div class="campo">
+          <label>Empresa</label>
+          <input type="text" id="inst_empresa" placeholder="Nombre empresa">
+        </div>
+        <div class="campo">
+          <label>Nº instalador</label>
+          <input type="text" id="inst_num" placeholder="E-XXXXX">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2: CONTEXTO -->
+  <div class="seccion">
+    <div class="seccion-header">
+      <span class="num">2</span> Tipo de instalación
+    </div>
+    <div class="seccion-body">
+      <div class="campo">
+        <label>¿Dónde está el punto de recarga? <span class="req">*</span></label>
+        <select id="ctx_ubicacion" onchange="actualizarRecomendaciones()">
+          <option value="">— Selecciona —</option>
+          <option value="viv_unifamiliar">Garaje de vivienda unifamiliar</option>
+          <option value="garaje_comunitario">Plaza en garaje comunitario (bloque de pisos)</option>
+          <option value="local">Local comercial / oficina</option>
+          <option value="nave">Nave industrial / taller</option>
+          <option value="parking_publico">Aparcamiento público</option>
+        </select>
+        <div class="recomendacion info" id="rec_ubicacion">
+          <div class="rec-titulo">ℹ️ Nota</div>
+          <span id="rec_ubicacion_texto"></span>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Modo de carga instalado <span class="req">*</span></label>
+        <select id="ctx_modo" onchange="actualizarRecomendaciones()">
+          <option value="">— Selecciona —</option>
+          <option value="2">Modo 2 — Cable ICCPD con caja de protección portátil</option>
+          <option value="3">Modo 3 — Wallbox fijo con control piloto integrado</option>
+        </select>
+        <div class="recomendacion" id="rec_modo">
+          <div class="rec-titulo" id="rec_modo_titulo"></div>
+          <span id="rec_modo_texto"></span>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Esquema de conexión (ITC-BT-52) <span class="req">*</span></label>
+        <select id="ctx_esquema" onchange="actualizarRecomendaciones()">
+          <option value="">— Selecciona —</option>
+          <option value="4A">Esquema 4A — Circuito adicional sin contador secundario</option>
+          <option value="4B">Esquema 4B — Circuito adicional con contador secundario</option>
+          <option value="2">Esquema 2 — Contador común vivienda + recarga</option>
+          <option value="1">Esquema 1 — Troncal (varios puntos colectivos)</option>
+        </select>
+        <div class="recomendacion" id="rec_esquema">
+          <div class="rec-titulo" id="rec_esquema_titulo"></div>
+          <span id="rec_esquema_texto"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 3: SAVE -->
+  <div class="seccion">
+    <div class="seccion-header">
+      <span class="num">3</span> Estación de recarga (SAVE)
+    </div>
+    <div class="seccion-body">
+      <div class="fila-2">
+        <div class="campo">
+          <label>Marca <span class="req">*</span></label>
+          <input type="text" id="save_marca" placeholder="Ej: Wallbox, V2C...">
+        </div>
+        <div class="campo">
+          <label>Modelo <span class="req">*</span></label>
+          <input type="text" id="save_modelo" placeholder="Ej: Pulsar Plus">
+        </div>
+      </div>
+      <div class="fila-2">
+        <div class="campo">
+          <label>Potencia nominal (W) <span class="req">*</span></label>
+          <input type="number" id="save_potencia" placeholder="Ej: 7400" onchange="calcularCorriente()">
+        </div>
+        <div class="campo">
+          <label>Tipo alimentación <span class="req">*</span></label>
+          <select id="save_alimentacion" onchange="calcularCorriente()">
+            <option value="mono">Monofásica 230V</option>
+            <option value="tri">Trifásica 400V</option>
+          </select>
+        </div>
+      </div>
+      <div class="fila-2">
+        <div class="campo">
+          <label>Corriente nominal (A)</label>
+          <input type="number" id="save_corriente" placeholder="Se calcula solo" step="0.1">
+        </div>
+        <div class="campo">
+          <label>Conector / base <span class="req">*</span></label>
+          <select id="save_conector">
+            <option value="Tipo 2 (Mennekes)">Tipo 2 — Mennekes</option>
+            <option value="Base schuko">Base schuko</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+      </div>
+      <div class="fila-2">
+        <div class="campo">
+          <label>Grado protección IP</label>
+          <input type="text" id="save_ip" placeholder="Ej: IP54">
+        </div>
+        <div class="campo">
+          <label>Grado protección IK</label>
+          <input type="text" id="save_ik" placeholder="Ej: IK10">
+        </div>
+      </div>
+      <div class="campo">
+        <label>Protecciones integradas en el SAVE</label>
+        <input type="text" id="save_protecciones" placeholder="Ej: Diferencial 30mA Tipo A, SPD Tipo II">
+      </div>
+      <div class="campo">
+        <label>Comunicación / gestión</label>
+        <select id="save_comunicacion">
+          <option value="Sin gestión">Sin gestión</option>
+          <option value="WiFi">WiFi</option>
+          <option value="OCPP">OCPP</option>
+          <option value="WiFi + OCPP">WiFi + OCPP</option>
+          <option value="Bluetooth">Bluetooth</option>
+          <option value="Otra">Otra</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 4: CABLE -->
+  <div class="seccion">
+    <div class="seccion-header">
+      <span class="num">4</span> Cable de alimentación al SAVE
+    </div>
+    <div class="seccion-body">
+      <div class="fila-2">
+        <div class="campo">
+          <label>Tipo de cable <span class="req">*</span></label>
+          <select id="cable_tipo">
+            <option value="H07V-K 450/750V">H07V-K 450/750V</option>
+            <option value="RV-K 0,6/1kV">RV-K 0,6/1kV</option>
+            <option value="RZ1-K 0,6/1kV">RZ1-K 0,6/1kV (libre halógenos)</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label>Sección (mm²) <span class="req">*</span></label>
+          <select id="cable_seccion">
+            <option value="">—</option>
+            <option value="2.5">2,5 mm²</option>
+            <option value="4">4 mm²</option>
+            <option value="6">6 mm²</option>
+            <option value="10">10 mm²</option>
+            <option value="16">16 mm²</option>
+            <option value="25">25 mm²</option>
+          </select>
+        </div>
+      </div>
+      <div class="fila-2">
+        <div class="campo">
+          <label>Longitud del tramo (m) <span class="req">*</span></label>
+          <input type="number" id="cable_longitud" placeholder="Ej: 15" step="0.5">
+        </div>
+        <div class="campo">
+          <label>Modo de instalación <span class="req">*</span></label>
+          <select id="cable_modo">
+            <option value="Tubo empotrado (B1)">Tubo empotrado</option>
+            <option value="Tubo superficie (B2)">Tubo en superficie</option>
+            <option value="Bandeja (C)">Bandeja / canal</option>
+            <option value="Libre en pared (D)">Grapado en pared</option>
+          </select>
+        </div>
+      </div>
+      <div class="fila-2">
+        <div class="campo">
+          <label>Temperatura ambiente (°C)</label>
+          <select id="cable_temp">
+            <option value="25">25 °C</option>
+            <option value="30">30 °C</option>
+            <option value="35">35 °C</option>
+            <option value="40" selected>40 °C (por defecto)</option>
+            <option value="45">45 °C</option>
+            <option value="50">50 °C</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label>Nº circuitos agrupados</label>
+          <select id="cable_agrupamiento">
+            <option value="1" selected>1 (solo)</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5 o más</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 5: PROTECCIONES -->
+  <div class="seccion">
+    <div class="seccion-header">
+      <span class="num">5</span> Protecciones eléctricas
+    </div>
+    <div class="seccion-body">
+      <div class="fila-2">
+        <div class="campo">
+          <label>Magnetotérmico — calibre In (A) <span class="req">*</span></label>
+          <select id="prot_mag_in">
+            <option value="">—</option>
+            <option value="10">10 A</option>
+            <option value="16">16 A</option>
+            <option value="20">20 A</option>
+            <option value="25">25 A</option>
+            <option value="32">32 A</option>
+            <option value="40">40 A</option>
+            <option value="50">50 A</option>
+            <option value="63">63 A</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label>Curva</label>
+          <select id="prot_mag_curva">
+            <option value="C" selected>Curva C (normal)</option>
+            <option value="B">Curva B</option>
+          </select>
+        </div>
+      </div>
+      <div class="fila-2">
+        <div class="campo">
+          <label>Poder de corte</label>
+          <select id="prot_mag_pcc">
+            <option value="6 kA">6 kA</option>
+            <option value="10 kA">10 kA</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label>Diferencial — calibre In (A) <span class="req">*</span></label>
+          <select id="prot_dif_in">
+            <option value="">—</option>
+            <option value="25">25 A</option>
+            <option value="40">40 A</option>
+            <option value="63">63 A</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="background:#f0f4ff; border-radius:8px; padding:10px 12px; font-size:12px; color:#1a2f5a; margin-bottom:14px;">
+        ℹ️ <strong>Diferencial:</strong> Siempre debe ser <strong>Tipo A</strong> (no Tipo AC) y sensibilidad <strong>30 mA</strong>, obligatorio por ITC-BT-52 para puntos de recarga VE.
+      </div>
+
+      <div class="campo">
+        <label>¿Se instala protección contra sobretensiones (SPD)?</label>
+        <select id="prot_spd" onchange="toggleSPD()">
+          <option value="No instalado">No instalado</option>
+          <option value="Instalado Tipo II">Sí — SPD Tipo II</option>
+        </select>
+      </div>
+      <div class="campo" id="campo_spd_up" style="display:none;">
+        <label>Tensión de protección Up (kV)</label>
+        <select id="prot_spd_up">
+          <option value="1,5 kV">1,5 kV</option>
+          <option value="2,5 kV">2,5 kV</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label>Resistencia de toma de tierra</label>
+        <input type="text" id="prot_tierra" placeholder="Ej: < 20 Ω  o  15 Ω (medida)">
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 6: OBSERVACIONES -->
+  <div class="seccion">
+    <div class="seccion-header">
+      <span class="num">6</span> Observaciones
+    </div>
+    <div class="seccion-body">
+      <div class="campo">
+        <label>Notas adicionales (opcional)</label>
+        <textarea id="obs_notas" placeholder="Cualquier detalle relevante que no esté recogido arriba..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTÓN GENERAR RESUMEN -->
+  <button class="btn btn-primary" onclick="generarResumen()">
+    Ver resumen y enviar →
+  </button>
+
+  <!-- RESUMEN -->
+  <div id="resumen-section" class="seccion" style="margin-top:20px;">
+    <div class="seccion-header">
+      <span class="num">✓</span> Resumen de la instalación
+    </div>
+    <div class="seccion-body">
+      <div id="alertas-resumen"></div>
+      <table class="resumen-tabla" id="tabla-resumen"></table>
+      <hr class="sep">
+      <p style="font-size:13px; color: var(--gris-texto); margin-bottom:8px;">
+        Pulsa el botón para enviar este resumen directamente por WhatsApp al ingeniero:
+      </p>
+      <a id="btn-whatsapp" href="#" class="btn btn-whatsapp" target="_blank">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Enviar por WhatsApp
+      </a>
+      <button class="btn btn-secondary" onclick="editarFormulario()" style="margin-top:8px;">
+        ← Corregir datos
+      </button>
+    </div>
+  </div>
+
+  <p class="footer-note">GuiAl Ingeniería · Alberto Guirado Alonso · Berja, Almería</p>
+
+</div>
+
+<script>
+// ─── LÓGICA DE RECOMENDACIONES ───────────────────────────────────────────────
+
+const REC_UBICACION = {
+  viv_unifamiliar: {
+    tipo: 'info',
+    texto: 'Para vivienda unifamiliar lo habitual es <strong>Modo 3 + Esquema 4A</strong> (wallbox fijo, circuito adicional sin contador independiente).'
+  },
+  garaje_comunitario: {
+    tipo: 'info',
+    texto: 'Para garaje comunitario lo habitual es <strong>Modo 3 + Esquema 4B</strong> (wallbox fijo, con contador secundario para imputar el consumo a cada propietario).'
+  },
+  local: {
+    tipo: 'info',
+    texto: 'Para local comercial lo habitual es <strong>Modo 3 + Esquema 4A o 4B</strong> según si se quiere medición independiente.'
+  },
+  nave: {
+    tipo: 'info',
+    texto: 'Para nave o taller puede ser monofásico o trifásico. Si el SAVE es de 22 kW necesita alimentación <strong>trifásica 400V</strong>.'
+  },
+  parking_publico: {
+    tipo: 'aviso',
+    texto: 'Parking público: normalmente <strong>Esquema 4B</strong> con contador secundario. Si hay varios puntos, puede aplicar Esquema 1 (troncal). Consulta al ingeniero.'
+  }
+};
+
+const REC_MODO = {
+  '2': {
+    tipo: 'aviso',
+    titulo: '⚠️ Modo 2 seleccionado',
+    texto: 'El Modo 2 usa un cable portátil con caja ICCPD. Es válido en vivienda pero <strong>no es la solución recomendada</strong> para instalaciones nuevas. El Modo 3 (wallbox fijo) es preferible.'
+  },
+  '3': {
+    tipo: 'ok',
+    titulo: '✓ Modo 3 — Recomendado',
+    texto: 'El Modo 3 (wallbox fijo con control piloto integrado) es la solución recomendada por ITC-BT-52 para instalaciones fijas nuevas.'
+  }
+};
+
+const REC_ESQUEMA = {
+  '4A': {
+    tipo: 'ok',
+    titulo: '✓ Esquema 4A — Habitual en vivienda propia',
+    texto: 'Circuito adicional desde el cuadro general, sin contador independiente. Correcto cuando la instalación es de uso propio y no hay transacción comercial.'
+  },
+  '4B': {
+    tipo: 'ok',
+    titulo: '✓ Esquema 4B — Habitual en garaje comunitario',
+    texto: 'Circuito adicional con contador secundario. Necesario cuando hay que imputar el consumo individualmente (comunidades, empresas).'
+  },
+  '2': {
+    tipo: 'aviso',
+    titulo: '⚠️ Esquema 2 — Solo si la potencia contratada lo permite',
+    texto: 'El contador es común para vivienda y recarga. Solo válido si la potencia contratada es suficiente para ambos consumos simultáneos.'
+  },
+  '1': {
+    tipo: 'info',
+    titulo: 'ℹ️ Esquema 1 — Troncal colectivo',
+    texto: 'Para instalaciones con varios puntos de recarga colectivos. Poco habitual en vivienda individual.'
+  }
+};
+
+function actualizarRecomendaciones() {
+  const ubicacion = document.getElementById('ctx_ubicacion').value;
+  const modo = document.getElementById('ctx_modo').value;
+  const esquema = document.getElementById('ctx_esquema').value;
+
+  // Recomendación ubicación
+  const recUbic = document.getElementById('rec_ubicacion');
+  if (ubicacion && REC_UBICACION[ubicacion]) {
+    const r = REC_UBICACION[ubicacion];
+    recUbic.className = `recomendacion ${r.tipo} visible`;
+    document.getElementById('rec_ubicacion_texto').innerHTML = r.texto;
+  } else {
+    recUbic.className = 'recomendacion';
+  }
+
+  // Recomendación modo
+  const recModo = document.getElementById('rec_modo');
+  if (modo && REC_MODO[modo]) {
+    const r = REC_MODO[modo];
+    recModo.className = `recomendacion ${r.tipo} visible`;
+    document.getElementById('rec_modo_titulo').textContent = r.titulo;
+    document.getElementById('rec_modo_texto').innerHTML = r.texto;
+  } else {
+    recModo.className = 'recomendacion';
+  }
+
+  // Recomendación esquema
+  const recEsq = document.getElementById('rec_esquema');
+  if (esquema && REC_ESQUEMA[esquema]) {
+    const r = REC_ESQUEMA[esquema];
+    recEsq.className = `recomendacion ${r.tipo} visible`;
+    document.getElementById('rec_esquema_titulo').textContent = r.titulo;
+    document.getElementById('rec_esquema_texto').innerHTML = r.texto;
+  } else {
+    recEsq.className = 'recomendacion';
+  }
+
+  actualizarProgreso();
+}
+
+function toggleSPD() {
+  const spd = document.getElementById('prot_spd').value;
+  document.getElementById('campo_spd_up').style.display =
+    spd === 'Instalado Tipo II' ? 'block' : 'none';
+}
+
+function calcularCorriente() {
+  const p = parseFloat(document.getElementById('save_potencia').value);
+  const ali = document.getElementById('save_alimentacion').value;
+  if (!p) return;
+  let ib;
+  if (ali === 'mono') {
+    ib = (p / 230).toFixed(1);
+  } else {
+    ib = (p / (Math.sqrt(3) * 400)).toFixed(1);
+  }
+  document.getElementById('save_corriente').value = ib;
+  actualizarProgreso();
+}
+
+// ─── PROGRESO ────────────────────────────────────────────────────────────────
+
+function actualizarProgreso() {
+  const campos = ['ctx_ubicacion','ctx_modo','ctx_esquema','save_marca',
+    'save_modelo','save_potencia','cable_seccion','cable_longitud',
+    'prot_mag_in','prot_dif_in'];
+  let rellenos = campos.filter(id => {
+    const el = document.getElementById(id);
+    return el && el.value && el.value !== '';
+  }).length;
+  const pct = Math.round((rellenos / campos.length) * 100);
+  document.getElementById('progress').style.width = pct + '%';
+}
+
+document.querySelectorAll('input, select, textarea').forEach(el => {
+  el.addEventListener('change', actualizarProgreso);
+  el.addEventListener('input', actualizarProgreso);
+});
+
+// ─── GENERAR RESUMEN ──────────────────────────────────────────────────────────
+
+function g(id) {
+  const el = document.getElementById(id);
+  if (!el) return '';
+  return el.value || '';
+}
+
+function generarResumen() {
+  const errores = [];
+
+  if (!g('inst_nombre')) errores.push('Nombre del instalador');
+  if (!g('ctx_ubicacion')) errores.push('Tipo de instalación');
+  if (!g('ctx_modo')) errores.push('Modo de carga');
+  if (!g('ctx_esquema')) errores.push('Esquema de conexión');
+  if (!g('save_marca')) errores.push('Marca del SAVE');
+  if (!g('save_modelo')) errores.push('Modelo del SAVE');
+  if (!g('save_potencia')) errores.push('Potencia del SAVE');
+  if (!g('cable_seccion')) errores.push('Sección del cable');
+  if (!g('cable_longitud')) errores.push('Longitud del cable');
+  if (!g('prot_mag_in')) errores.push('Calibre del magnetotérmico');
+  if (!g('prot_dif_in')) errores.push('Calibre del diferencial');
+
+  const divAlertas = document.getElementById('alertas-resumen');
+  if (errores.length > 0) {
+    divAlertas.innerHTML = `<div class="alerta-resumen error">
+      ⚠️ Faltan campos obligatorios:<br>· ${errores.join('<br>· ')}
+    </div>`;
+    document.getElementById('resumen-section').style.display = 'block';
+    document.getElementById('resumen-section').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+  divAlertas.innerHTML = '';
+
+  const ubicaciones = {
+    viv_unifamiliar: 'Garaje de vivienda unifamiliar',
+    garaje_comunitario: 'Garaje comunitario (bloque de pisos)',
+    local: 'Local comercial / oficina',
+    nave: 'Nave industrial / taller',
+    parking_publico: 'Aparcamiento público'
+  };
+
+  const spd = g('prot_spd') === 'Instalado Tipo II'
+    ? `Instalado Tipo II (Up = ${g('prot_spd_up')})`
+    : 'No instalado';
+
+  const filas = [
+    ['grupo', 'INSTALADOR', ''],
+    ['', 'Nombre', g('inst_nombre')],
+    ['', 'Empresa', g('inst_empresa') || '—'],
+    ['', 'Nº instalador', g('inst_num') || '—'],
+    ['grupo', 'CLASIFICACIÓN', ''],
+    ['', 'Ubicación', ubicaciones[g('ctx_ubicacion')] || g('ctx_ubicacion')],
+    ['', 'Modo de carga', `Modo ${g('ctx_modo')}`],
+    ['', 'Esquema ITC-BT-52', `Esquema ${g('ctx_esquema')}`],
+    ['grupo', 'SAVE — ESTACIÓN DE RECARGA', ''],
+    ['', 'Marca / Modelo', `${g('save_marca')} ${g('save_modelo')}`],
+    ['', 'Potencia nominal', `${g('save_potencia')} W`],
+    ['', 'Alimentación', g('save_alimentacion') === 'mono' ? 'Monofásica 230V' : 'Trifásica 400V'],
+    ['', 'Corriente nominal', `${g('save_corriente')} A`],
+    ['', 'Conector / base', g('save_conector')],
+    ['', 'IP / IK', `IP${g('save_ip') || '—'} / IK${g('save_ik') || '—'}`],
+    ['', 'Protecciones integradas', g('save_protecciones') || '—'],
+    ['', 'Comunicación', g('save_comunicacion')],
+    ['grupo', 'CABLE DE ALIMENTACIÓN', ''],
+    ['', 'Tipo de cable', g('cable_tipo')],
+    ['', 'Sección', `${g('cable_seccion')} mm²`],
+    ['', 'Longitud', `${g('cable_longitud')} m`],
+    ['', 'Modo de instalación', g('cable_modo')],
+    ['', 'Temperatura ambiente', `${g('cable_temp')} °C`],
+    ['', 'Circuitos agrupados', g('cable_agrupamiento')],
+    ['grupo', 'PROTECCIONES', ''],
+    ['', 'Magnetotérmico', `${g('prot_mag_in')} A · Curva ${g('prot_mag_curva')} · ${g('prot_mag_pcc')}`],
+    ['', 'Diferencial', `${g('prot_dif_in')} A · 30 mA · Tipo A`],
+    ['', 'SPD', spd],
+    ['', 'Resistencia de tierra', g('prot_tierra') || '—'],
+  ];
+
+  if (g('obs_notas')) {
+    filas.push(['grupo', 'OBSERVACIONES', '']);
+    filas.push(['', 'Notas', g('obs_notas')]);
+  }
+
+  let html = '';
+  filas.forEach(([tipo, clave, valor]) => {
+    if (tipo === 'grupo') {
+      html += `<tr class="grupo"><td colspan="2">${clave}</td></tr>`;
+    } else {
+      html += `<tr><td>${clave}</td><td>${valor}</td></tr>`;
+    }
+  });
+  document.getElementById('tabla-resumen').innerHTML = html;
+
+  // Construir mensaje WhatsApp
+  const fecha = new Date().toLocaleDateString('es-ES');
+  let msg = `🔌 *FICHA TÉCNICA IRVE — GuiAl Ingeniería*\n`;
+  msg += `📅 Fecha: ${fecha}\n\n`;
+
+  msg += `👷 *INSTALADOR*\n`;
+  msg += `Nombre: ${g('inst_nombre')}\n`;
+  if (g('inst_empresa')) msg += `Empresa: ${g('inst_empresa')}\n`;
+  if (g('inst_num')) msg += `Nº instalador: ${g('inst_num')}\n`;
+
+  msg += `\n🏠 *CLASIFICACIÓN*\n`;
+  msg += `Ubicación: ${ubicaciones[g('ctx_ubicacion')] || g('ctx_ubicacion')}\n`;
+  msg += `Modo de carga: Modo ${g('ctx_modo')}\n`;
+  msg += `Esquema ITC-BT-52: Esquema ${g('ctx_esquema')}\n`;
+
+  msg += `\n⚡ *SAVE (ESTACIÓN DE RECARGA)*\n`;
+  msg += `Marca/Modelo: ${g('save_marca')} ${g('save_modelo')}\n`;
+  msg += `Potencia: ${g('save_potencia')} W\n`;
+  msg += `Alimentación: ${g('save_alimentacion') === 'mono' ? 'Monofásica 230V' : 'Trifásica 400V'}\n`;
+  msg += `Corriente nominal: ${g('save_corriente')} A\n`;
+  msg += `Conector: ${g('save_conector')}\n`;
+  msg += `IP/IK: IP${g('save_ip') || '—'} / IK${g('save_ik') || '—'}\n`;
+  if (g('save_protecciones')) msg += `Protecciones integradas: ${g('save_protecciones')}\n`;
+  msg += `Comunicación: ${g('save_comunicacion')}\n`;
+
+  msg += `\n🔴 *CABLE DE ALIMENTACIÓN*\n`;
+  msg += `Tipo: ${g('cable_tipo')}\n`;
+  msg += `Sección: ${g('cable_seccion')} mm²\n`;
+  msg += `Longitud: ${g('cable_longitud')} m\n`;
+  msg += `Instalación: ${g('cable_modo')}\n`;
+  msg += `Temperatura: ${g('cable_temp')} °C\n`;
+  msg += `Circuitos agrupados: ${g('cable_agrupamiento')}\n`;
+
+  msg += `\n🔒 *PROTECCIONES*\n`;
+  msg += `Magnetotérmico: ${g('prot_mag_in')} A · Curva ${g('prot_mag_curva')} · ${g('prot_mag_pcc')}\n`;
+  msg += `Diferencial: ${g('prot_dif_in')} A · 30 mA · Tipo A\n`;
+  msg += `SPD: ${spd}\n`;
+  msg += `Resistencia de tierra: ${g('prot_tierra') || '—'}\n`;
+
+  if (g('obs_notas')) {
+    msg += `\n📝 *OBSERVACIONES*\n${g('obs_notas')}\n`;
+  }
+
+  msg += `\n_Generado con la ficha GuiAl Ingeniería_`;
+
+  // Tu número de WhatsApp — cámbialo si hace falta
+  const numero = '34600000000';
+  const url = `https://wa.me/${numero}?text=${encodeURIComponent(msg)}`;
+  document.getElementById('btn-whatsapp').href = url;
+
+  document.getElementById('resumen-section').style.display = 'block';
+  document.getElementById('resumen-section').scrollIntoView({behavior:'smooth'});
+  document.getElementById('progress').style.width = '100%';
+}
+
+function editarFormulario() {
+  document.getElementById('resumen-section').style.display = 'none';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+</script>
+</body>
+</html>
