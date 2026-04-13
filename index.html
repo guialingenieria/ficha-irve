@@ -470,11 +470,19 @@
       <div class="fila-2">
         <div class="campo">
           <label>Tipo de cable <span class="req">*</span></label>
-          <select id="cable_tipo">
+          <select id="cable_tipo" onchange="sugerirConfiguracionCable()">
             <option value="H07V-K 450/750V">H07V-K 450/750V</option>
             <option value="RV-K 0,6/1kV">RV-K 0,6/1kV</option>
             <option value="RZ1-K 0,6/1kV">RZ1-K 0,6/1kV (libre halógenos)</option>
             <option value="Otro">Otro</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label>Configuración del cable <span class="req">*</span></label>
+          <select id="cable_config">
+            <option value="">— Selecciona —</option>
+            <option value="unipolar">Conductores unipolares (cables sueltos en tubo)</option>
+            <option value="manguera">Cable multipolar / manguera</option>
           </select>
         </div>
         <div class="campo">
