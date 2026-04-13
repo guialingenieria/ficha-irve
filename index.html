@@ -778,12 +778,24 @@ function calcularCorriente() {
   document.getElementById('save_corriente').value = ib;
   actualizarProgreso();
 }
+  
+function sugerirConfiguracionCable() {
+  const tipo = document.getElementById('cable_tipo').value;
+  const config = document.getElementById('cable_config');
 
+  if (tipo === "H07V-K 450/750V") {
+    config.value = "unipolar";
+  } else if (tipo === "RV-K 0,6/1kV" || tipo === "RZ1-K 0,6/1kV") {
+    config.value = "manguera";
+  } else {
+    config.value = "";
+  }
+}
 // ─── PROGRESO ────────────────────────────────────────────────────────────────
 
 function actualizarProgreso() {
   const campos = ['ctx_ubicacion','ctx_modo','ctx_esquema','save_marca',
-    'save_modelo','save_potencia','cable_seccion','cable_longitud',
+    'save_modelo','save_potencia','cable_seccion','cable_longitud','cable_config',
     'prot_mag_in','prot_dif_in'];
   let rellenos = campos.filter(id => {
     const el = document.getElementById(id);
@@ -864,6 +876,7 @@ function generarResumen() {
     ['', 'Comunicación', g('save_comunicacion')],
     ['grupo', 'CABLE DE ALIMENTACIÓN', ''],
     ['', 'Tipo de cable', g('cable_tipo')],
+    ['', 'Configuración', g('cable_config')],
     ['', 'Sección', `${g('cable_seccion')} mm²`],
     ['', 'Longitud', `${g('cable_longitud')} m`],
     ['', 'Modo de instalación', g('cable_modo')],
@@ -918,6 +931,7 @@ function generarResumen() {
 
   msg += `\n🔴 *CABLE DE ALIMENTACIÓN*\n`;
   msg += `Tipo: ${g('cable_tipo')}\n`;
+  msg += `Configuración: ${g('cable_config')}\n`;
   msg += `Sección: ${g('cable_seccion')} mm²\n`;
   msg += `Longitud: ${g('cable_longitud')} m\n`;
   msg += `Instalación: ${g('cable_modo')}\n`;
